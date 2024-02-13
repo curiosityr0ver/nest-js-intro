@@ -16,15 +16,6 @@ export class UserService {
     return this.userRepository.save(createUserDto);
   }
 
-  async login(username: string, password: string) {
-    const user = await this.userRepository.findOneBy({ username });
-    if (user.password == password) {
-      return 'logged in';
-    } else {
-      return 'failed';
-    }
-  }
-
   findAll() {
     return this.userRepository.find();
   }
