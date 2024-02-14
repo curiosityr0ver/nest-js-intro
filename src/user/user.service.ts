@@ -12,8 +12,15 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return this.userRepository.save(createUserDto);
+  async create(createUserDto: CreateUserDto) {
+    const { username, userid } = createUserDto;
+    const user1 = await this.userRepository.findOneBy({ username });
+    const user2 = await this.userRepository.findOneBy({ userid });
+    if (user1 || user2) {
+      return 'already exists !';
+    } else {
+      return this.userRepository.save(createUserDto);
+    }
   }
 
   findAll() {

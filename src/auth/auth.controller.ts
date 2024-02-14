@@ -5,11 +5,15 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  // @Get()
+  // findAll() {
+  //   return 'Arrived on auth';
+  // }
+
   @Get()
   findAll() {
-    return 'Arrived on auth';
+    return this.authService.findAll();
   }
-
   @Post('login')
   login(@Body() { username, password }) {
     return this.authService.login(username, password);

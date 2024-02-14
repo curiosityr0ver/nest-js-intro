@@ -4,18 +4,25 @@ import { Injectable } from '@nestjs/common';
 import { UserAuth } from './entities/auth.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(UserAuth)
     private readonly userRepository: Repository<UserAuth>,
+    private jwtService: JwtService,
   ) {}
+
+  findAll() {
+    return this.userRepository.find();
+  }
 
   async login(username: string, password: string) {
     const user = await this.userRepository.findOneBy({ username });
     if (user.password == password) {
-      return 'logged in';
+      const token = await this.jwtService.signAsync({ username });
+      return { username, token };
     } else {
       return 'failed';
     }
